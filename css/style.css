@@ -1,0 +1,55 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.loading-layer {
+  transition: all 1s;
+}
+.spinner {
+  animation: spin 2s infinite linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.logo {
+  width: 50px;
+}
+
+.list-unstyled > * {
+  margin-bottom: 20px;
+}
+
+.meal-layer {
+  transition: top 0.3s;
+  color: white;
+}
+
+.meal:hover .meal-layer {
+  top: 0 !important;
+}
+.meal-layer p {
+  transition: opacity 0.3s;
+}
+.meal:hover .meal-layer p {
+  opacity: 1 !important;
+}
+aside {
+  transform: translateX(-225px);
+  transition: transform 0.6s;
+}
+
+.ingredient {
+  background-color: #09c;
+  padding: 10px;
+  margin-right: 15px;
+  border-radius: 8px;
+  color: white;
+  margin-bottom: 0;
+}
