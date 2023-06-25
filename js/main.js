@@ -1,15 +1,24 @@
-let mainPage = document.querySelector(".main");
 const aside = document.querySelector("aside");
 const sections = document.querySelector(".sections");
 const icon = document.querySelector(".icon");
 const loadingLayer = document.querySelector(".loading-layer");
-let mealList = document.querySelector(".meals-row");
+let mealsRow = document.querySelector(".meals-row");
+const categoryLink = document.getElementById("categories");
 
-document.onload = lodingEffect();
-
-mealList.addEventListener("click", function (e) {
-  getMealDesc(e);
+// document.onload = lodingEffect();
+categoryLink.addEventListener("click", getMealsCategories);
+icon.addEventListener("click", function () {
+  if (icon.classList.contains("fa-xmark")) {
+    aside.style.transform = `translateX(${-sections.clientWidth}px)`;
+    icon.classList.remove("fa-xmark");
+    icon.classList.add("fa-burger");
+  } else {
+    aside.style.transform = `translateX(0)`;
+    icon.classList.remove("fa-burger");
+    icon.classList.add("fa-xmark");
+  }
 });
+
 fetch("https://www.themealdb.com/api/json/v1/1/search.php?s=").then((res) => {
   res.json().then((data) => {
     data = data.meals;
@@ -17,13 +26,11 @@ fetch("https://www.themealdb.com/api/json/v1/1/search.php?s=").then((res) => {
   });
 });
 
-function getMealDesc(e) {
-  let id = e.target.parentElement.getAttribute("id");
+function getMealDesc(id) {
   fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`).then(
     (res) => {
       res.json().then((mealDesc) => {
         mealDesc = mealDesc.meals[0];
-        lodingEffect();
         displayMealDesc(mealDesc);
       });
     }
@@ -31,10 +38,8 @@ function getMealDesc(e) {
 }
 
 function displayMealDesc(meal) {
-  let descRow = ` 
-       <section class="meal-info">
-      <div class="container">
-        <div class="row desc-row">
+  let meals = ` 
+      
           <div class="col-md-4">
             <div class="meal-desc-img">
               <img src="${meal.strMealThumb}" class="w-100" alt="" />
@@ -63,55 +68,174 @@ function displayMealDesc(meal) {
               </ul>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
+  
 `;
 
-  mainPage.innerHTML = descRow;
+  mealsRow.innerHTML = meals;
 }
 
-function displayMeals(data) {
-  const mealsRow = document.querySelector(".meals-row");
-  let meals = "";
-  for (let i = 0; i < data.length; i++) {
-    meals += `
-   <div class="col-md-4 col-lg-3 ">
-            <div class="position-relative meal " id="${data[i].idMeal}">
+function getMealsCategories() {
+  fetch(`https://www.themealdb.com/api/json/v1/1/categories.php
+`)
+    .then((res) => {
+      return res.json();
+    })
+    .then((categories) => {
+      displayCategories(categories.categories);
+    });
+}
+
+function displayCategories(categories) {
+  let categoriesHtml = ``;
+  for (let i = 0; i < categories.length; i++) {
+    categoriesHtml += `
+       <div class="col-md-4 col-lg-3 meal-categories">
+            <div class="position-relative meal" onclick="filterByCate('${categories[i].strCategory}')"  id="${categories[i].idCategory}">
               <img
                 class="meal-img bg-info w-100 rounded-2"
-                src="${data[i].strMealThumb}"
+                src="${categories[i].strCategoryThumb}"
                 alt=""
               />
               <div
                 class="meal-layer overflow-hidden rounded-2 d-flex justify-content-center align-items-center position-absolute start-0 top-100 end-0 bottom-0 bg-black"
               >
-               ${data[i].strMeal}
+               ${categories[i].strCategory}
               </div>
             </div>
           </div>
+  `;
+    mealsRow.innerHTML = categoriesHtml;
+  }
+}
+
+function filterByCate(category) {
+  fetch(
+    `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`
+  ).then((res) => {
+    res.json().then((meals) => {
+      displayMeals(meals.meals);
+    });
+  });
+}
+
+function getAllAreas() {
+  fetch(`https://www.themealdb.com/api/json/v1/1/list.php?a=list`).then(
+    (res) => {
+      res.json().then((areas) => {
+        console.log(areas.meals);
+        displayAreas(areas.meals);
+      });
+    }
+  );
+}
+const areaLink = document
+  .getElementById("area")
+  .addEventListener("click", getAllAreas);
+
+function displayAreas(areas) {
+  let mealsAreas = "";
+  for (let i = 0; i < areas.length; i++) {
+    mealsAreas += `
+      <div class="col-md-3 text-center" onclick="filterByArea('${areas[i].strArea}')" id="${areas[i].strArea}">
+              <i class="fa-solid fa-house-laptop fa-4x"></i>
+              <p>${areas[i].strArea}</p>
+            </div>
+    `;
+  }
+  mealsRow.innerHTML = mealsAreas;
+}
+
+function filterByArea(id) {
+  fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${id}`).then(
+    (res) => {
+      res.json().then((areaMeals) => {
+        console.log(areaMeals);
+        displayMeals(areaMeals.meals);
+      });
+    }
+  );
+}
+
+function getAllIngrediants() {
+  fetch(`https://www.themealdb.com/api/json/v1/1/list.php?i=list`).then(
+    (res) => {
+      {
+        res.json().then((igerdiants) => {
+          igerdiants = igerdiants.meals.slice(0, 25);
+          displayIngrediants(igerdiants);
+        });
+      }
+    }
+  );
+}
+
+function displayIngrediants(ingrediants) {
+  let mealsIngrediants = "";
+  for (let i = 0; i < ingrediants.length; i++) {
+    mealsIngrediants += `
+      <div class="col-md-3 text-center" onclick="filterByIngrediants('${
+        ingrediants[i].strIngredient
+      }')" id="${ingrediants[i].strIngredient}">
+    <i class="fa-solid fa-bowl-rice fa-4x"></i>
+              <p>${ingrediants[i].strIngredient}</p>
+              <p>${ingrediants[i].strDescription
+                .split(" ")
+                .slice(0, 20)
+                .join(" ")}
+            </div>
+    `;
+  }
+  mealsRow.innerHTML = mealsIngrediants;
+}
+
+const ingrediantsLinl = document
+  .getElementById("ingredients")
+  .addEventListener("click", getAllIngrediants);
+
+function filterByIngrediants(id) {
+  fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${id}`).then(
+    (res) => {
+      res.json().then((ingrediants) => {
+        console.log(ingrediants);
+        displayMeals(ingrediants.meals);
+      });
+    }
+  );
+}
+
+function displayMeals(data) {
+  let meals = "";
+  for (let i = 0; i < data.length; i++) {
+    meals += `
+          <div class="col-md-4 col-lg-3">
+        <div
+          class="position-relative meal"
+          onclick=" getMealDesc('${data[i].idMeal}')"
+          id="${data[i].idMeal}"
+        >
+          <img
+            class="meal-img bg-info w-100 rounded-2"
+            src="${data[i].strMealThumb}"
+            alt=""
+          />
+          <div
+            class="meal-layer overflow-hidden rounded-2 d-flex justify-content-center align-items-center position-absolute start-0 top-100 end-0 bottom-0 bg-black"
+          >
+            ${data[i].strMeal}
+          </div>
+        </div>
+      </div>
+
   `;
   }
   mealsRow.innerHTML = meals;
 }
 
-function lodingEffect() {
-  loadingLayer.style.opacity = "0";
-  loadingLayer.style.visability = "hidden";
-  loadingLayer.style.visability = "hidden";
-  loadingLayer.addEventListener("transitionend", () => {
-    loadingLayer.remove();
-  });
-}
-
-icon.addEventListener("click", function () {
-  if (icon.classList.contains("fa-xmark")) {
-    aside.style.transform = `translateX(${-sections.clientWidth}px)`;
-    icon.classList.remove("fa-xmark");
-    icon.classList.add("fa-burger");
-  } else {
-    aside.style.transform = `translateX(0)`;
-    icon.classList.remove("fa-burger");
-    icon.classList.add("fa-xmark");
-  }
-});
+// function lodingEffect() {
+//   loadingLayer.style.opacity = "0";
+//   loadingLayer.style.visability = "hidden";
+//   loadingLayer.style.visability = "hidden";
+//   loadingLayer.addEventListener("transitionend", () => {
+//     loadingLayer.remove();
+//   });
+// }
