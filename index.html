@@ -4,13 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Belanosima:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="css/all.min.css" />
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/style.css" />
     <title>Document</title>
   </head>
-  <body class="bg-danger">
-    <!-- <div
+  <body>
+    <div
       class="loading-layer position-fixed start-0 top-0 end-0 bottom-0 z-3 bg-dark"
     >
       <div
@@ -18,11 +24,13 @@
       >
         <i class="fas fa-spinner spinner"></i>
       </div>
-    </div> -->
+    </div>
+
+  
 
     <aside class="d-flex z-1 position-fixed bg-black top-0 start-0 bottom-0">
       <div
-        class="sections position-relative p-2 d-flex flex-column justify-content-between p-4"
+        class="sections inner-side-bar position-relative p-2 d-flex flex-column justify-content-between p-4"
       >
         <ul class="list-unstyled text-white nav-links">
           <li id="search">Search</li>
@@ -41,32 +49,30 @@
           </p>
         </div>
       </div>
-      search-bootstrab 
-
-      
 
       <div
-        class="d-flex text-white flex-column justify-content-between py-3 bg-white align-items-center px-1"
+        class="d-flex text-white outer-side-bar flex-column justify-content-between py-3  align-items-center px-1"
       >
         <img class="logo" src="logo.png" alt="" />
-        <i class="fa-solid text-black fa-burger icon fs-1"></i>
+        <i class="fa-solid fa-burger icon fs-2"></i>
 
-        <i class="fa-solid text-black fa-share fs-1"></i>
+        <i class="fa-solid fa-share fs-2"></i>
       </div>
     </aside>
-    <section class="main py-5">
-      <div class="meals">
+
+    <section class="main text-white container">
+      <div class="search-container container px-5"></div>
+      <form action="" id="contacts-form" class="container px-5"></form>
+
+      <div class="main p-5">
         <div class="container">
           <div class="row g-3 meals-row"></div>
-          <div class="row d-flex">
-          
-           
-          </div>
+          <div class="row d-flex"></div>
         </div>
       </div>
     </section>
 
     <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/main.js" ></script>
   </body>
 </html>
