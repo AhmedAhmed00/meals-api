@@ -11,8 +11,9 @@ const searchLink = document.getElementById("search");
 const ingrediantsLink = document.getElementById("ingredients");
 const searchContainer = document.querySelector(".search-container");
 
-aside.style.transform = `translateX(${-sections.clientWidth}px)`;
+
 document.onload = lodingEffect();
+ aside.style.transform = `translateX(${-sections.clientWidth}px)`;
 ingrediantsLink.addEventListener("click", getAllIngrediants);
 contacstForm.addEventListener("submit", function (e) {
   if (
