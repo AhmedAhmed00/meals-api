@@ -16,6 +16,9 @@ window.addEventListener("load", function () {
   handleLoading();
 });
 
+
+
+
 links.forEach((li) => {
   li.addEventListener("click", function () {
     handleSideBarClick();
