@@ -16,9 +16,6 @@ window.addEventListener("load", function () {
   handleLoading();
 });
 
-
-
-
 links.forEach((li) => {
   li.addEventListener("click", function () {
     handleSideBarClick();
@@ -80,7 +77,6 @@ function handleSideBarClick() {
 }
 
 function displayMeals(data) {
-  handleLoading();
   let meals = "";
   for (let i = 0; i < data.length; i++) {
     meals += `
@@ -235,6 +231,7 @@ function filterByArea(areaId) {
   fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${areaId}`).then(
     (res) => {
       res.json().then((areaMeals) => {
+        handleLoading();
         displayMeals(areaMeals.meals);
       });
     }
@@ -282,6 +279,7 @@ function filterByIngrediants(ingrediantId) {
     `https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingrediantId}`
   ).then((res) => {
     res.json().then((ingrediants) => {
+      handleLoading();
       displayMeals(ingrediants.meals);
     });
   });
